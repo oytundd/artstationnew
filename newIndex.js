@@ -3,7 +3,6 @@
 let userUrl = "https://www.artstation.com/users/lemonhunter/likes.json";
 let userName = "lemonhunter";
 function getStorage(key) {
-  //tested
   return new Promise(function (resolve, reject) {
     chrome.storage.local.get(["key"], function (result) {
       console.log("v Result received from storage v");
