@@ -1,21 +1,23 @@
 "use strict";
 
-let userUrl = "https://www.artstation.com/users/lemonhunter/likes.json";
-let userName = "lemonhunter";
+let testingUrl = "https://www.artstation.com/users/lemonhunter/likes.json";
+let testingName = "lemonhunter";
 function getStorage(key) {
   return new Promise(function (resolve, reject) {
-    chrome.storage.local.get(["key"], function (result) {
+    chrome.storage.local.get(key, function (result) {
       console.log("v Result received from storage v");
-      console.log(result.key);
-      resolve(result);
+      console.log(result[key]);
+      resolve(result[key]);
     });
   });
 }
 function setStorage(key, value) {
   return new Promise(function (resolve, reject) {
-    chrome.storage.local.set({ key: value }, function () {
-      console.log("v Storage set v");
-      console.log(key, value);
+    chrome.storage.local.set({ [key]: value }, function () {
+      console.log("Key:");
+      console.log(key);
+      console.log("Set to:");
+      console.log(value);
       resolve();
     });
   });
@@ -23,21 +25,129 @@ function setStorage(key, value) {
 async function fetchJson(url) {
   const RESPONSE = await fetch(url);
   if (RESPONSE.ok) {
-    return RESPONSE.json();
+    console.log("Json fetching succesfull.");
+    let respJson = RESPONSE.json();
+    console.log(respJson);
+    return respJson;
+    // if (
+    //   Object.keys(respJson["PromiseResult"]).length === 0 &&
+    //   respJson["PromiseResult"].constructor === Object
+    // ) {
+    //   return null;
+    // } else {
+    //   return respJson;
+    // }
   } else {
     const MESSAGE = "An error has occured:" + response.status;
     throw MESSAGE;
   }
 }
 async function updateJson(url) {
+  // const userUrl = await getStorage("userUrl");
   const USERJSON = await fetchJson(url);
   await setStorage("json", USERJSON);
+  console.log("JSON Updated");
 }
 async function getRandomArtwork() {
-  chrome.storage.local.get(["json"], function (result) {
-    console.log("Json Retrieved:");
-    console.log(result);
-    let randInt = Math.floor(Math.random() * result["json"]["data"].length);
-    return result["json"]["data"][randInt];
-  });
+  console.log("Random artwork function activated");
+  const RESULT = await getStorage(["json"]);
+  let randInt = Math.floor(Math.random() * RESULT["data"].length);
+  return RESULT["data"][randInt];
 }
+async function init() {
+  console.log("Init func activated");
+  let userUrl = await getStorage("userUrl");
+  if (userUrl == undefined) {
+    document.getElementById("usernameForm").style.opacity = "100";
+    // SET FORM VISIBILITY TO 100 IF userURL not found.
+    console.log("User url not found");
+  } else {
+    console.log("User found.");
+    updateJson(userUrl);
+    setElements();
+  }
+}
+async function setElements() {
+  console.log("Set elements function activated.");
+  let artworkObj = await getRandomArtwork();
+  let bgUrl = bgUrlMaker(artworkObj.cover.small_square_url);
+  let artistName = artworkObj.user.username;
+  let artworkTitle = artworkObj.title;
+  let artworkLink = artworkObj.permalink;
+  console.log(artworkTitle, artistName, bgUrl);
+  document.getElementById("artworkLink").href = artworkLink;
+  document.getElementById("artworkLink").innerText =
+    artworkTitle + " \n by \n " + artistName;
+  document.getElementById("blurbg").style.backgroundImage =
+    "url(" + bgUrl + ")";
+  document.getElementById("bg").style.backgroundImage = "url(" + bgUrl + ")";
+  document.getElementById("changeUser").style.opacity = "100";
+  // document.getElementsByClassName("button").style.background =
+  //   "url(" + bgUrl + ") no-repeat";
+  console.log("Set elements function finished.");
+}
+function bgUrlMaker(url) {
+  const linkParts = url.split("/");
+  let firstPart = "";
+  for (let i = 0; i < 10; i++) {
+    firstPart += linkParts[i] + "/";
+  }
+  let lastPart = "";
+  for (let i = linkParts.length; i > linkParts.length - 2; i--) {
+    lastPart += linkParts[i];
+  }
+  lastPart = lastPart.replace("undefined", "");
+  let bgUrl = firstPart + "large/" + lastPart;
+  return bgUrl;
+}
+function createUrl(username) {
+  let userUrl = "https://www.artstation.com/users/";
+  userUrl += username;
+  userUrl += "/likes.json";
+  console.log("User url created: " + userUrl);
+  return userUrl;
+}
+init();
+
+window.onload = function () {
+  document
+    .getElementById("formButton")
+    .addEventListener("click", async function getUsername() {
+      let username = document.getElementById("username").value;
+      if (username == "") {
+        alert("Please enter a username");
+      } else {
+        // console.log(username);
+        let userUrl = createUrl(username);
+        let fetchedJson = await fetchJson(userUrl);
+        console.log(fetchedJson);
+        if (fetchedJson["data"].length == 0) {
+          alert("User not found or has no likes!");
+        } else {
+          console.log("User Found.");
+          document.getElementById("usernameForm").style.opacity = "0";
+          setStorage("userUrl", userUrl);
+          updateJson(userUrl);
+          setElements();
+          //hide form
+        }
+      }
+    });
+  document
+    .getElementById("changeUser")
+    .addEventListener("click", function changeUserButton() {
+      console.log("Change user button pressed!");
+      document.getElementById("usernameForm").style.opacity = "100";
+      console.log("Username form set to 100 opacity!");
+      document.getElementById("bg").style.opacity = "0";
+      document.getElementById("cancelButton").disabled = false;
+      document.getElementById("cancelButton").style.opacity = 100;
+      document.getElementById("cancelButton").style.cursor = "pointer";
+    });
+  document
+    .getElementById("cancelButton")
+    .addEventListener("click", function cancelChange() {
+      document.getElementById("usernameForm").style.opacity = "0";
+      document.getElementById("bg").style.opacity = "100";
+    });
+};

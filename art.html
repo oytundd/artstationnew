@@ -1,13 +1,59 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script src = newIndex.js></script>
+  <script src="newIndex.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
-  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  
+  <form id="usernameForm" name="usernameForm" action="">
+    Username: <input type="text" id="username" name="username" value="lemonhunter"><br>
+    <input id="formButton" type="button" value="Save Username">
+  </form> 
 </body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+  
+<head>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css" crossorigin="anonymous">
+    <!-- <script src="newIndex.js"></script> -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>New Tab</title>
+</head>
+
+<body>
+    <div class=blurbg id=blurbg></div>
+    <div class=bg id=bg></div>
+    <div class="family">
+      <div class="sister"></div>
+      <div class="brother">
+        <a href="" target="_self" id="artworkLink" class="artworkLink"></a>
+        <div id="outer" class="buttonsDiv">
+          <!-- <input id="changeUser" type="button" value="Change User"> -->
+          <button class="button" type="button" id="changeUser">Change User <i class="fas fa-edit"></i> </button>
+          <!-- <div class="inner"><button type="submit" class="msgBtn2" onClick="return false;">Publish</button></div>
+          <div class="inner"><button class="msgBtnBack">Back</button></div> -->
+      </div> 
+      </div>
+    </div>
+    <div class="formContainer">
+    <form action="#" method="post" class="usernameForm" id="usernameForm">
+        <div class="usernameFormDiv">
+          <label for="username">artstation.com/users/ </label>
+          <input type="text" name="username" id="username" placeholder="username" required>         
+        </div>
+        <div class="buttonsDiv">
+          <button class="button" type="button" id="formButton">Save username <i class="fas fa-save"></i> </button>
+          <button class="button" disabled type="button" id="cancelButton"><i class="fas fa-times"></i> </button>
+          <!-- <input id="formButton" type="button" value="Save Username"> -->
+        </div>
+      </form>
+    </div>
+        
+</body>
+<script src="newIndex.js"></script>
 </html>
