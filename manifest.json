@@ -9,7 +9,7 @@
   "chrome_url_overrides": {
     "newtab": "art.html"
   },
-  "content_security_policy":"script-src 'self' https://www.artstation.com/; object-src 'self'",
+  "content_security_policy":"script-src 'self' https://www.artstation.com/; object-src",
   
   "content_scripts": [
     {
