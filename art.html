@@ -29,26 +29,31 @@
     <div class=blurbg id=blurbg></div>
     <div class=bg id=bg></div>
     <div class="family">
-      <div class="sister"></div>
-      <div class="brother">
+      <div class="sister" id="sister"></div>
+      <div class="brother" id="brother">
+        <div class="artworkLinkDiv" id="artworkLinkDiv">
         <a href="" target="_self" id="artworkLink" class="artworkLink"></a>
+      </div>
         <div id="outer" class="buttonsDiv">
+        
           <!-- <input id="changeUser" type="button" value="Change User"> -->
           <button class="button" type="button" id="changeUser">Change User <i class="fas fa-edit"></i> </button>
+          <button class="button" type="button" id="refreshButton"> <i class="fas fa-sync"></i> </button>
           <!-- <div class="inner"><button type="submit" class="msgBtn2" onClick="return false;">Publish</button></div>
           <div class="inner"><button class="msgBtnBack">Back</button></div> -->
       </div> 
       </div>
     </div>
-    <div class="formContainer">
+    <div class="formContainer" id="formContainer">
     <form action="#" method="post" class="usernameForm" id="usernameForm">
         <div class="usernameFormDiv">
-          <label for="username">artstation.com/users/ </label>
-          <input type="text" name="username" id="username" placeholder="username" required>         
+          <label class="labelClass" for="username">artstation.com/users/</label>
+          <input type="text" name="username" class="usernameClass" id="username" placeholder="" required> 
+          <p class="ihatecss"> /likes </p>   
         </div>
         <div class="buttonsDiv">
-          <button class="button" type="button" id="formButton">Save username <i class="fas fa-save"></i> </button>
-          <button class="button" disabled type="button" id="cancelButton"><i class="fas fa-times"></i> </button>
+          <button class="button" type="button" id="formButton">Save Username  <i class="fas fa-check-square"></i> </button>
+          <button class="button" disabled type="button" id="cancelButton">Cancel  <i class="fas fa-window-close"></i> </button>
           <!-- <input id="formButton" type="button" value="Save Username"> -->
         </div>
       </form>

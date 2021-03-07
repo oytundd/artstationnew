@@ -1,0 +1,3 @@
+
+learn content_security_policy and manifest to put minimal amount stuff
+reroll if adult content

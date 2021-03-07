@@ -38,7 +38,7 @@ async function fetchJson(url) {
     //   return respJson;
     // }
   } else {
-    const MESSAGE = "An error has occured:" + response.status;
+    const MESSAGE = "An error has occured:" + RESPONSE.status;
     throw MESSAGE;
   }
 }
@@ -59,6 +59,9 @@ async function init() {
   let userUrl = await getStorage("userUrl");
   if (userUrl == undefined) {
     document.getElementById("usernameForm").style.opacity = "100";
+    document.getElementById("formContainer").style.pointerEvents = "auto";
+    document.getElementById("sister").style.pointerEvents = "none";
+    document.getElementById("brother").style.pointerEvents = "none";
     // SET FORM VISIBILITY TO 100 IF userURL not found.
     console.log("User url not found");
   } else {
@@ -77,13 +80,15 @@ async function setElements() {
   console.log(artworkTitle, artistName, bgUrl);
   document.getElementById("artworkLink").href = artworkLink;
   document.getElementById("artworkLink").innerText =
-    artworkTitle + " \n by \n " + artistName;
+    artworkTitle + " \n  " + artistName;
   document.getElementById("blurbg").style.backgroundImage =
     "url(" + bgUrl + ")";
   document.getElementById("bg").style.backgroundImage = "url(" + bgUrl + ")";
   document.getElementById("changeUser").style.opacity = "100";
-  // document.getElementsByClassName("button").style.background =
-  //   "url(" + bgUrl + ") no-repeat";
+  let userUrl = await getStorage("userUrl");
+  let userName = userUrl.replace("https://www.artstation.com/users/", "");
+  userName = userName.replace("/likes.json", "");
+  document.querySelector("#username").placeholder = userName;
   console.log("Set elements function finished.");
 }
 function bgUrlMaker(url) {
@@ -126,9 +131,15 @@ window.onload = function () {
         } else {
           console.log("User Found.");
           document.getElementById("usernameForm").style.opacity = "0";
-          setStorage("userUrl", userUrl);
-          updateJson(userUrl);
-          setElements();
+          await setStorage("userUrl", userUrl);
+          await updateJson(userUrl);
+          await setElements();
+          document.getElementById("usernameForm").style.opacity = "0";
+          document.getElementById("bg").style.opacity = "100";
+          document.getElementById("formContainer").style.pointerEvents = "none";
+          document.getElementById("sister").style.pointerEvents = "auto";
+          document.getElementById("brother").style.pointerEvents = "auto";
+          // location.reload();
           //hide form
         }
       }
@@ -138,16 +149,32 @@ window.onload = function () {
     .addEventListener("click", function changeUserButton() {
       console.log("Change user button pressed!");
       document.getElementById("usernameForm").style.opacity = "100";
+      document.getElementById("usernameForm").style.transitionDuration = "1s";
       console.log("Username form set to 100 opacity!");
+
       document.getElementById("bg").style.opacity = "0";
+      document.getElementById("bg").style.transitionDuration = "1s";
       document.getElementById("cancelButton").disabled = false;
       document.getElementById("cancelButton").style.opacity = 100;
       document.getElementById("cancelButton").style.cursor = "pointer";
+      document.getElementById("formContainer").style.pointerEvents = "auto";
+      // document.getElementById("brother").style.transitionDuration = "0s";
+      // document.getElementById("brother").style.visibility = "hidden";
+      document.getElementById("sister").style.pointerEvents = "none";
+      document.getElementById("brother").style.pointerEvents = "none";
     });
   document
     .getElementById("cancelButton")
     .addEventListener("click", function cancelChange() {
       document.getElementById("usernameForm").style.opacity = "0";
       document.getElementById("bg").style.opacity = "100";
+      document.getElementById("formContainer").style.pointerEvents = "none";
+      document.getElementById("sister").style.pointerEvents = "auto";
+      document.getElementById("brother").style.pointerEvents = "auto";
+    });
+  document
+    .getElementById("refreshButton")
+    .addEventListener("click", function refresh() {
+      setElements();
     });
 };

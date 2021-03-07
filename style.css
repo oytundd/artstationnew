@@ -1,5 +1,17 @@
+* {
+  /* text-shadow: 0 0 3px #000000, 0 0 5px #000000; */
+  text-shadow: 1px 1px 0 #000000, 1px -1px 0 #000000, -1px 1px 0 #000000,
+    -1px -1px 0 #000000, 1px 0px 0 #000000, 0px 1px 0 #000000,
+    -1px 0px 0 #000000, 0px -1px 0 #000000;
+  letter-spacing: 1.5px;
+  /* text-shadow: 2px 2px 0 #000000, 2px -2px 0 #000000, -2px 2px 0 #000000,
+    -2px -2px 0 #000000, 2px 0px 0 #000000, 0px 2px 0 #000000,
+    -2px 0px 0 #000000, 0px -2px 0 #000000; */
+}
 body {
   overflow: hidden;
+
+  /* -webkit-text-stroke: 1px black; */
 }
 .blurbg {
   position: absolute;
@@ -22,6 +34,7 @@ body {
   -ms-filter: blur(30px);
   opacity: 90%;
   transform: scale(1.1);
+  background-image: url("lemon-comfy.jpg");
 }
 .bg {
   position: absolute;
@@ -32,6 +45,7 @@ body {
   height: 100%;
   width: 100%;
   z-index: 1;
+  transition-duration: 1s;
   background-attachment: fixed;
   background-repeat: no-repeat;
   background-size: contain;
@@ -60,6 +74,7 @@ body {
 .brother:hover {
   opacity: 100;
   text-decoration: underline;
+  transition-duration: 1s;
 }
 
 .sister:hover + .brother {
@@ -80,22 +95,51 @@ body {
   position: relative;
   z-index: 4;
 }
+.usernameClass {
+  color: white;
+  border: white 1px solid;
+  background-color: transparent;
+  font-size: 17px;
+  border-radius: 4px;
+  padding: 5px;
+}
+.ihatecss {
+  display: block;
+  padding-left: 3px;
+}
+.labelClass {
+  display: block;
+  padding-right: 3px;
+}
+::placeholder {
+  color: white;
+  opacity: 90%;
+  font-size: 18px;
+}
 .usernameFormDiv {
-  background-color: white; /* Green */
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border: black;
-  color: black;
-  padding: 8px 16px;
+  color: white;
+  padding: 0px 12px 0px 12px;
   text-align: center;
   text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  border-radius: 4px;
+  font-size: 18px;
+  border-radius: 8px;
+  box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 1px, rgba(0, 0, 0, 0.07) 0px 2px 2px,
+    rgba(0, 0, 0, 0.07) 0px 4px 4px, rgba(0, 0, 0, 0.07) 0px 8px 8px,
+    rgba(0, 0, 0, 0.07) 0px 16px 16px;
+  background-color: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(5px);
 }
 .formContainer {
   position: absolute;
-  left: 50%;
+  left: 45.5%;
   top: 50%;
   margin: -70px 0 0 -170px;
+  pointer-events: none;
 }
 .artworkLink {
   position: relative;
@@ -105,7 +149,18 @@ body {
   word-spacing: 4px;
   font-size: x-large;
   text-decoration: none;
-  text-shadow: 0.07em 0 black, 0 0.07em black, -0.07em 0 black, 0 -0.07em black;
+
+  /* text-shadow: 0.07em 0 black, 0 0.07em black, -0.07em 0 black, 0 -0.07em black; */
+}
+.artworkLinkDiv {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 1px, rgba(0, 0, 0, 0.07) 0px 2px 2px,
+    rgba(0, 0, 0, 0.07) 0px 4px 4px, rgba(0, 0, 0, 0.07) 0px 8px 8px,
+    rgba(0, 0, 0, 0.07) 0px 16px 16px;
+
+  padding: 10px;
+  padding-bottom: 12px;
 }
 .outer {
   opacity: 0;
@@ -121,26 +176,49 @@ body {
   padding-top: 10px;
 } */
 .button {
-  background-color: white; /* Green */
+  /* background-color: white;*/
   border: black;
-  color: black;
+  color: white;
   padding: 8px 16px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
   font-size: 16px;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
 }
 .buttonsDiv {
   padding-top: 10px;
 }
+
 #changeUser {
   opacity: 0;
+  box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 1px, rgba(0, 0, 0, 0.07) 0px 2px 2px,
+    rgba(0, 0, 0, 0.07) 0px 4px 4px, rgba(0, 0, 0, 0.07) 0px 8px 8px,
+    rgba(0, 0, 0, 0.07) 0px 16px 16px;
+  background-color: rgba(255, 255, 255, 0.15);
 }
+
 #cancelButton {
   opacity: 50%;
   cursor: default;
+  box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 1px, rgba(0, 0, 0, 0.07) 0px 2px 2px,
+    rgba(0, 0, 0, 0.07) 0px 4px 4px, rgba(0, 0, 0, 0.07) 0px 8px 8px,
+    rgba(0, 0, 0, 0.07) 0px 16px 16px;
+  background-color: rgba(255, 255, 255, 0.15);
+}
+#refreshButton {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 1px, rgba(0, 0, 0, 0.07) 0px 2px 2px,
+    rgba(0, 0, 0, 0.07) 0px 4px 4px, rgba(0, 0, 0, 0.07) 0px 8px 8px,
+    rgba(0, 0, 0, 0.07) 0px 16px 16px;
+}
+#formButton {
+  box-shadow: rgba(0, 0, 0, 0.07) 0px 1px 1px, rgba(0, 0, 0, 0.07) 0px 2px 2px,
+    rgba(0, 0, 0, 0.07) 0px 4px 4px, rgba(0, 0, 0, 0.07) 0px 8px 8px,
+    rgba(0, 0, 0, 0.07) 0px 16px 16px;
+  background-color: rgba(255, 255, 255, 0.15);
 }
 /* .reEnter {
   background: url("baseline_border_color_black_18dp.png") no-repeat center;
