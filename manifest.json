@@ -1,6 +1,6 @@
 {
   "name": "Artstation Likes New Tab",
-  "description": "Get a random image from your arstation likes everytime you open a new tab!",
+  "description": "Get a random artwork from your artstation likes everytime you open a new tab!",
   "version": "1",
   "incognito": "split",
   "permissions":[
@@ -13,7 +13,7 @@
   
   "content_scripts": [
     {
-      "matches": ["https://www.artstation.com/*"],
+      "matches": ["https://www.artstation.com/users/*"],
         "js": ["newIndex.js"]
     }
   ],
