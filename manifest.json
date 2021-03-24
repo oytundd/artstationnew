@@ -1,7 +1,7 @@
 {
   "name": "Artstation Likes New Tab",
   "description": "Get a random artwork from your artstation likes everytime you open a new tab!",
-  "version": "1",
+  "version": "1.1",
   "incognito": "split",
   "permissions":[
     "storage"
@@ -10,7 +10,12 @@
     "newtab": "art.html"
   },
   "content_security_policy":"script-src 'self' https://www.artstation.com/; object-src",
-  
+  "icons": {  "16": "icon.png",
+              "48": "icon.png",
+              "128": "icon.png" },
+  "browser_action": {
+                "default_icon":"icon.png"
+               },
   "content_scripts": [
     {
       "matches": ["https://www.artstation.com/users/*"],
