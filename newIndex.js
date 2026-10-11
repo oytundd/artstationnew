@@ -26,9 +26,7 @@ async function fetchJson(url) {
   const RESPONSE = await fetch(url);
   if (RESPONSE.ok) {
     console.log("Json fetching succesfull.");
-    let respJson = RESPONSE.json();
-    console.log(respJson);
-    return respJson;
+    return RESPONSE.json();
     // if (
     //   Object.keys(respJson["PromiseResult"]).length === 0 &&
     //   respJson["PromiseResult"].constructor === Object
@@ -50,7 +48,10 @@ async function updateJson(url) {
 }
 async function getRandomArtwork() {
   console.log("Random artwork function activated");
-  const RESULT = await getStorage(["json"]);
+  const RESULT = await getStorage("json");
+  if (!RESULT || !RESULT.data || RESULT.data.length === 0) {
+    throw new Error("No liked artworks found in storage");
+  }
   let randInt = Math.floor(Math.random() * RESULT["data"].length);
   return RESULT["data"][randInt];
 }
@@ -66,8 +67,20 @@ async function init() {
     console.log("User url not found");
   } else {
     console.log("User found.");
-    updateJson(userUrl);
-    setElements();
+    try {
+      const cached = await getStorage("json");
+      if (cached && cached.data && cached.data.length > 0) {
+        // Show the cached likes right away and refresh them in the background.
+        setElements();
+        updateJson(userUrl).catch(console.error);
+      } else {
+        // Nothing usable cached yet: must fetch before we can render.
+        await updateJson(userUrl);
+        await setElements();
+      }
+    } catch (err) {
+      console.error(err);
+    }
   }
 }
 async function setElements() {
@@ -92,22 +105,11 @@ async function setElements() {
   console.log("Set elements function finished.");
 }
 function bgUrlMaker(url) {
-  const linkParts = url.split("/");
-  let firstPart = "";
-  for (let i = 0; i < 10; i++) {
-    firstPart += linkParts[i] + "/";
-  }
-  let lastPart = "";
-  for (let i = linkParts.length; i > linkParts.length - 2; i--) {
-    lastPart += linkParts[i];
-  }
-  lastPart = lastPart.replace("undefined", "");
-  let bgUrl = firstPart + "large/" + lastPart;
-  return bgUrl;
+  return url.replace("/small_square/", "/large/");
 }
 function createUrl(username) {
   let userUrl = "https://www.artstation.com/users/";
-  userUrl += username;
+  userUrl += encodeURIComponent(username);
   userUrl += "/likes.json";
   console.log("User url created: " + userUrl);
   return userUrl;
@@ -115,18 +117,28 @@ function createUrl(username) {
 init();
 
 window.onload = function () {
+  // Pressing Enter in the username box would otherwise submit (reload) the form.
+  document.getElementById("usernameForm").addEventListener("submit", (e) => {
+    e.preventDefault();
+    document.getElementById("formButton").click();
+  });
   document
     .getElementById("formButton")
     .addEventListener("click", async function getUsername() {
-      let username = document.getElementById("username").value;
+      let username = document.getElementById("username").value.trim();
       if (username == "") {
         alert("Please enter a username");
       } else {
-        // console.log(username);
         let userUrl = createUrl(username);
-        let fetchedJson = await fetchJson(userUrl);
-        console.log(fetchedJson);
-        if (fetchedJson["data"].length == 0) {
+        let fetchedJson;
+        try {
+          fetchedJson = await fetchJson(userUrl);
+        } catch (err) {
+          console.error(err);
+          alert("User not found or ArtStation could not be reached!");
+          return;
+        }
+        if (!fetchedJson || !fetchedJson.data || fetchedJson.data.length == 0) {
           alert("User not found or has no likes!");
         } else {
           console.log("User Found.");
