@@ -46,15 +46,16 @@
     </div>
     <div class="formContainer" id="formContainer">
     <form action="#" method="post" class="usernameForm" id="usernameForm">
+        <h1 class="formTitle">Artstation Likes</h1>
+        <p class="formSubtitle">Enter an ArtStation username and every new tab will show a random artwork from their likes.</p>
         <div class="usernameFormDiv">
           <label class="labelClass" for="username">artstation.com/users/</label>
-          <input type="text" name="username" class="usernameClass" id="username" placeholder="" required> 
-          <p class="ihatecss"> /likes </p>   
+          <input type="text" name="username" class="usernameClass" id="username" placeholder="username" autocomplete="off" spellcheck="false" required>
+          <span class="ihatecss">/likes</span>
         </div>
         <div class="buttonsDiv">
           <button class="button" type="button" id="formButton">Save Username  <i class="fas fa-check-square"></i> </button>
           <button class="button" disabled type="button" id="cancelButton">Cancel  <i class="fas fa-window-close"></i> </button>
-          <!-- <input id="formButton" type="button" value="Save Username"> -->
         </div>
       </form>
     </div>
