@@ -115,8 +115,13 @@ async function setElements() {
   let artworkLink = artworkObj.permalink;
   console.log(artworkTitle, artistName, bgUrl);
   document.getElementById("artworkLink").href = artworkLink;
-  document.getElementById("artworkLink").innerText =
-    artworkTitle + " \n  " + artistName;
+  const titleEl = document.createElement("span");
+  titleEl.className = "artTitle";
+  titleEl.textContent = artworkTitle;
+  const artistEl = document.createElement("span");
+  artistEl.className = "artArtist";
+  artistEl.textContent = artistName;
+  document.getElementById("artworkLink").replaceChildren(titleEl, artistEl);
   document.getElementById("blurbg").style.backgroundImage =
     "url(" + bgUrl + ")";
   document.getElementById("bg").style.backgroundImage = "url(" + bgUrl + ")";
