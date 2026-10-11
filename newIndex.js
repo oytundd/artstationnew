@@ -40,9 +40,32 @@ async function fetchJson(url) {
     throw MESSAGE;
   }
 }
+// Max number of likes pages to fetch, so big accounts don't make refreshes slow.
+const MAX_PAGES = 10;
+async function fetchAllLikes(url) {
+  const seen = new Set();
+  const all = [];
+  for (let page = 1; page <= MAX_PAGES; page++) {
+    let pageJson;
+    try {
+      pageJson = await fetchJson(url + "?page=" + page);
+    } catch (err) {
+      // Failing on the first page is a real error; later pages just end the list.
+      if (page === 1) throw err;
+      console.error(err);
+      break;
+    }
+    const items = (pageJson && pageJson.data) || [];
+    // Stop on an empty page, or if the server ignored ?page and repeated itself.
+    const fresh = items.filter((item) => !seen.has(item.id));
+    if (fresh.length === 0) break;
+    fresh.forEach((item) => seen.add(item.id));
+    all.push(...fresh);
+  }
+  return { data: all };
+}
 async function updateJson(url) {
-  // const userUrl = await getStorage("userUrl");
-  const USERJSON = await fetchJson(url);
+  const USERJSON = await fetchAllLikes(url);
   await setStorage("json", USERJSON);
   console.log("JSON Updated");
 }
